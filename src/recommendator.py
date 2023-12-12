@@ -119,16 +119,14 @@ def recommendation_output(top_indices, user_cosine_sim):
         similar_university_name = dfs[0].loc[dfs[0]['university'] == similar_university_id, 'university_name'].values[0]
         similar_faculty_id = data.loc[idx, 'faculty']
         similar_faculty_name = dfs[1].loc[dfs[1]['faculty'] == similar_faculty_id, 'faculty_name'].values[0]
-        similar_country_id = data.loc[idx, 'country_id']
-        similar_country_name = dfs[2].loc[dfs[2]['country_id'] == similar_country_id, 'country_title'].values[0]
-        similar_city_id = data.loc[idx, 'city_id']
-        similar_city_name = dfs[3].loc[dfs[3]['city_id'] == similar_city_id, 'city_title'].values[0]
+        # similar_country_id = data.loc[idx, 'country_id']
+        # similar_country_name = dfs[2].loc[dfs[2]['country_id'] == similar_country_id, 'country_title'].values[0]
+        # similar_city_id = data.loc[idx, 'city_id']
+        # similar_city_name = dfs[3].loc[dfs[3]['city_id'] == similar_city_id, 'city_title'].values[0]
         print(f"Пользователь {idx}:  "
             f"cos сходство {similarity},  "
             f"{similar_university_name},  "
-            f"{similar_faculty_name},  "
-            f"{similar_country_name},  "
-            f"{similar_city_name}")
+            f"{similar_faculty_name}")
 
 # Вывод ТОП-20 предпочтений пользователей
 print("\nТОП-20 рекомендованных ВУЗов на основе предпочтений других пользователей:")
