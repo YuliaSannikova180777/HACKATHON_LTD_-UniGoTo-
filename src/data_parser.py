@@ -32,7 +32,7 @@ project_path = os.path.abspath(os.path.join(current_dir, os.pardir))
 print(f"Путь к папке проекта '{project_path}'")
 
 # Задаём путь к папке raw_data/ относительно папки проекта
-output_folder = os.path.join(project_path, 'data_raw')
+output_folder = os.path.join(project_path, 'raw_data')
 
 # Создаём папку raw_data/, если ёё нет
 os.makedirs(output_folder, exist_ok=True)
