@@ -7,12 +7,12 @@ import zipfile
 
 
 # Задаём токен для доступа к API сервиса
-# token = "gQJVK5ifwfJqd4OBDmM"  # наш
-token = "JyfAAd77dWtxuK5FUYw"
+token = "gQJVK5ifwfJqd4OBDmM"  # наш
+# token = "JyfAAd77dWtxuK5FUYw"
 
 # Задаём начальную и конечную страницы
-start_page = 454001
-end_page = 500000
+start_page = 365500
+end_page = 380000
 
 # Задаём размер батча
 batch_size = 250
@@ -32,7 +32,7 @@ project_path = os.path.abspath(os.path.join(current_dir, os.pardir))
 print(f"Путь к папке проекта '{project_path}'")
 
 # Задаём путь к папке raw_data/ относительно папки проекта
-output_folder = os.path.join(project_path, 'raw_data')
+output_folder = os.path.join(project_path, 'data_raw')
 
 # Создаём папку raw_data/, если ёё нет
 os.makedirs(output_folder, exist_ok=True)
