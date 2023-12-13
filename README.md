@@ -195,11 +195,14 @@
 - включение средних учебных заведений, школ, лицеев и т.д. 
 
 # Локальный запуск приложения
-
+```
 src/recommendator.py
 ```
+либо
+```
 pip install --upgrade streamlit
-streamlit run https://raw.githubusercontent.com/Zagalskiy/ml_web_app/main/ml_web_app.py
+streamlit run https://raw.githubusercontent.com/YuliaSannikova180777/HACKATHON_LTD_-UniGoTo-/main/ml_web_app.py
+```
 
 # Над созданием проекта работали:
 
