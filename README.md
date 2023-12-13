@@ -3,7 +3,7 @@
 # Рекомендательная система для стартапа UniGoTo
 ## от команды "Las Teteras Desesperadas"
 
-<img src="https://github.com/Zagalskiy/ml_web_app/blob/main/Las_Teteras_Desesperadas.jpg" width="200" height="200" alt="Las Teteras Desesperadas">
+<img src="https://github.com/Zagalskiy/ml_web_app/blob/main/Unigoto_streamlit.jpg" width="480" height="270" alt="Las Teteras Desesperadas recsys for Unigoto">
 
 # Документация к проекту на разработку рекомендательной системы
 
