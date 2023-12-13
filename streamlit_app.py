@@ -52,7 +52,7 @@ dfs = {}  # Используем словарь для хранения DataFram
 for file_name, idx in zip(files_to_process, range(len(files_to_process))):
         dfs[idx] = load_data(file_name)
 
-data = load_data("C:/ML/Hackathon2/data/preprocessed_data.csv")
+data = load_data("./data/preprocessed_data.zip")
 
 # Обрабатываем пропущенные значения в столбце 'preprocessed_interests'
 data['preprocessed_interests'].fillna('', inplace=True)
