@@ -1,4 +1,5 @@
 import os
+import re
 import zipfile
 import pandas as pd
 from scipy.sparse import csr_matrix
@@ -64,7 +65,31 @@ data['preprocessed_interests'].fillna('', inplace=True)
 
 # Задаём словари интересов
 user_interests = []
-interest_col = ['О себе', 'Сфера деятельности', 'Любимые книги', 'Любимые игры', 'Интересы и хобби']
+interest_col = ['about', 'activities', 'books', 'games', 'interests']
+interest_col_input = ['О себе', 'Сфера деятельности', 'Любимые книги', 'Любимые игры', 'Интересы и хобби']
+
+# Функция для очистки текста от лишних символов
+def clean_text(text):
+    # Применяем только к непустым (не NaN) значениям
+    if not pd.isnull(text):
+        # Заменяем пробелами все знаки, кроме русских, английских букв и пробелов
+        text = re.sub(r'[^a-zA-Zа-яА-ЯёЁ\s]', ' ', text)
+        
+        # Приводим к нижнему регистру
+        text = text.lower()
+        
+        # Удаляем сочетания более 3 подряд идущих букв
+        text = re.sub(r'([a-zа-яё])\1{3,}', '', text)
+        
+        # Удаляем повторяющиеся слова
+        text = re.sub(r'\b(\w+)(\s+\1)+\b', r'\1', text)
+        
+        # Заменяем подряд идущие пробелы на один
+        text = re.sub(r'\s+', ' ', text)
+                
+        # Удаляем пробелы в начале и конце строки
+        text = re.sub(r'^\s+|\s+$', '', text)
+    return text
 
 # Загружаем интересы пользователя
 load_interest = input("\nЗагрузить интересы пользователя (да/нет)?\t").lower()
@@ -76,27 +101,29 @@ if load_interest == 'да':
     user_data = pd.read_csv(output_path)
 elif load_interest == 'нет':
     # Запрашиваем интересы пользователя
-    print("Введите ваши данные и предпочтения (на русском языке, можно без точек и запятых).")
+    print("Введите ваши данные и предпочтения:")
 
     # Собираем интересы пользователя
-    for col in interest_col:
-        user_interests.append(input(f"Введите информацию '{col}': "))
+    for col in interest_col_input:
+        user_interests.append(input(f"{col}: "))
 
     # Создаём DataFrame с введёнными данными пользователя
     user_data = pd.DataFrame([user_interests], columns=interest_col)
 
     # Обрабатываем пропущенные значения в столбцах 'interests'
-    user_data = user_data.fillna('')
+    user_data.fillna('', inplace=True)
+
+    # Применяем функцию очистки к интересам
+    user_data.loc[:, interest_col] = user_data[interest_col].apply(lambda x: x.map(clean_text) if x.name in interest_col else x)
 
     # Объединяем все строки интересов пользователя
     user_data['preprocessed_interests'] = user_data.apply(lambda row: ' '.join(row), axis=1)
 
-    # Обрабатываем пропущенные значения в столбце 'preprocessed_interests'
-    user_data['preprocessed_interests'].fillna('', inplace=True)
+    print("\nВаши данные:\n", user_data['preprocessed_interests'].values)  # Вывод данных пользователя
 
     # Сохраняем данные пользователя в файл CSV
     user_data.to_csv(output_path, index=False)
-    print(f"Файл {output_file} сохранён")
+    print(f"\nФайл {output_file} сохранён")
 
 # Создаём разреженную матрицу TF-IDF для преобразования строк интересов пользователей
 tfidf_vectorizer = TfidfVectorizer()
@@ -113,7 +140,7 @@ top_indices = user_cosine_sim.argsort()[0][-21:-1][::-1]
 
 # Функция вывода рекомендаций
 def recommendation_output(top_indices, user_cosine_sim):
-    for idx in top_indices:
+    for i, idx in enumerate(top_indices[:20]):
         similarity = round(user_cosine_sim[0][idx], 4)
         similar_university_id = data.loc[idx, 'university']
         similar_university_name = dfs[0].loc[dfs[0]['university'] == similar_university_id, 'university_name'].values[0]
@@ -123,13 +150,12 @@ def recommendation_output(top_indices, user_cosine_sim):
         # similar_country_name = dfs[2].loc[dfs[2]['country_id'] == similar_country_id, 'country_title'].values[0]
         # similar_city_id = data.loc[idx, 'city_id']
         # similar_city_name = dfs[3].loc[dfs[3]['city_id'] == similar_city_id, 'city_title'].values[0]
-        print(f"Пользователь {idx}:  "
-            f"cos сходство {similarity},  "
-            f"{similar_university_name},  "
-            f"{similar_faculty_name}")
+        print(f"{i+1}) {similar_university_name},  "
+            f"{similar_faculty_name},  "
+            f"сходство {similarity}")
 
 # Вывод ТОП-20 предпочтений пользователей
-print("\nТОП-20 рекомендованных ВУЗов на основе предпочтений других пользователей:")
+print("\nТОП-20 рекомендованных ВУЗов:")
 recommendation_output(top_indices, user_cosine_sim)
 
 # Запрашиваем желание пользователя ввести его город
@@ -178,5 +204,6 @@ if answer == 'да':
         # Вывод ТОП-20 предпочтений пользователей из этого региона
         print(f"\nТОП-20 рекомендованных ВУЗов на основе предпочтений других пользователей из региона {user_region}:")
         recommendation_output(top_indices_from_region, user_cosine_sim_from_region)
+        print('\nСпасибо за использование наших рекомендаций!')  # Благодарность
 elif answer == 'нет':
     print('Спасибо за использование наших рекомендаций!')  # Благодарность
