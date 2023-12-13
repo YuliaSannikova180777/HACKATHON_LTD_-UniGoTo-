@@ -2,7 +2,6 @@ import streamlit as st  # - фреймворк для развертывания
 
 
 # Макет приложения STREAMLIT
-data = load_data()
 
 with row1_1:
     st.title("UniGoTo")
