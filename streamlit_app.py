@@ -6,8 +6,15 @@ st.set_page_config(layout="wide", page_title="UniGoTo", page_icon=":ai:")
 
 st.title("UniGoTo")
 st.write("Рекомендательный сервис ВУЗов и специальностей на основе технологии Искусственного Интеллекта.")
+st.image("Las_Teteras_Desesperadas.jpg")
 
-interests = ''
+@st.cache_resource   # Функция декоратора для хранения одноэлементных объектов
+def load_data():     # предназначенная для избежания повторного пересчета
+    data = pd.read_csv("./data/user_data.csv")
+    return data
+
+data = load_data()
+st.write(data)
 
 with st.form("interests_form"):
         st.write("Введите ваши данные и предпочтения (на русском языке, можно без точек и запятых).")
@@ -20,3 +27,5 @@ with st.form("interests_form"):
         
         if submitted:
                 interests = st.write(interest1 + ' ' + interest2 + ' ' + interest3 + ' ' + interest4 + ' ' + interest5)
+
+# data = pd.read_csv("./data/user_data.csv")
