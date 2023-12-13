@@ -4,10 +4,29 @@ import pandas as pd
 # Задание широкоформатного режима страницы и указание заголовка
 st.set_page_config(layout="wide", page_title="UniGoTo", page_icon=":ai:")
 
-st.title("UniGoTo")
-st.write("Рекомендательный сервис ВУЗов и специальностей на основе технологии Искусственного Интеллекта.")
+# Построение верхнего уровня визуализации
+row1_1, row1_2, row1_3 = st.columns((2, 4, 1))
 
-data = pd.read_csv("./data/preprocessed_data.zip")
+with row1_1:
+        st.header("UniGoTo")
+        st.write("Рекомендательный сервис ВУЗов и специальностей на основе технологии Искусственного Интеллекта.")
+
+with row1_2:
+        st.header("Las Teteras Desesperadas")
+        st.write("""
+                 Рекомендательная система использует разреженную матрицу TF-IDF для преобразования строк 
+                 интересов пользователей и алгоритм косинусного сходства для вычисления схожести их интересов.
+                 """)
+with row1_3:
+        st.image("Las_Teteras_Desesperadas.jpg", width=150)
+        
+# Построение среднего уровня визуализации
+@st.cache_resource   # Функция декоратора для хранения одноэлементных объектов
+def load_data():     # предназначенная для избежания повторного пересчета
+        data = pd.read_csv("./data/preprocessed_data.zip")
+        return data
+
+data = load_data()
 st.write(data)
 
 with st.form("interests_form"):
