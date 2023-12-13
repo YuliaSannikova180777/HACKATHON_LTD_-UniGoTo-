@@ -29,12 +29,19 @@ app = FastAPI()
 
 logger = get_logger()
 
+class ItemNotFoundException(Exception):
+    pass
+
 class UserData(BaseModel):
     about: str
     activity_field: str
     favorite_books: str
     favorite_games: str
     hobbies: str
+
+@app.get("/")
+def read_root():
+    return {"Hello": "UniGoTo"}
 
 def load_data():
     # Получаем путь к текущей папке скриптов src/
@@ -201,10 +208,10 @@ def get_user_recommendations(user_data: UserData, include_location: bool = False
         return {"recommendations": recommendations}
     except ItemNotFoundException as e:
         logger.warning(f"Item not found: {e}")
-        raise handle_item_not_found_exception(e)
+        raise HTTPException(status_code=404, detail=f"Item not found: {e}")
     except Exception as e:
         logger.error(f"Internal Server Error: {e}")
-        raise handle_generic_exception(e)
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
         
 if __name__ == "__main__":
     import uvicorn
