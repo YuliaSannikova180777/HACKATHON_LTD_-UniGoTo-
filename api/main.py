@@ -6,8 +6,28 @@ import pandas as pd
 from scipy.sparse import csr_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import logging
+
+def get_logger():
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
+
+    # Создание обработчика для вывода в консоль
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+
+    # Создание форматтера и добавление его к обработчику
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    console_handler.setFormatter(formatter)
+
+    # Добавление обработчика к логгеру
+    logger.addHandler(console_handler)
+
+    return logger
 
 app = FastAPI()
+
+logger = get_logger()
 
 class UserData(BaseModel):
     about: str
@@ -143,8 +163,9 @@ def load_data():
                 f"{similar_university_name},  "
                 f"{similar_faculty_name}")
 
-    @app.post("/recommendations/")
-    def get_user_recommendations(user_data: UserData, include_location: bool = False):
+@app.post("/recommendations/")
+def get_user_recommendations(user_data: UserData, include_location: bool = False):
+    try:
         load_interest = input("\nLoad user interests (yes/no)?\t").lower()
 
         if load_interest == 'yes':
@@ -178,7 +199,9 @@ def load_data():
             pass
 
         return {"recommendations": recommendations}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    except ItemNotFoundException as e:
+        logger.warning(f"Item not found: {e}")
+        raise handle_item_not_found_exception(e)
+    except Exception as e:
+        logger.error(f"Internal Server Error: {e}")
+        raise handle_generic_exception(e)
