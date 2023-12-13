@@ -5,7 +5,6 @@
 <img src="https://github.com/Zagalskiy/ml_web_app/blob/main/Las_Teteras_Desesperadas.jpg" width="200" height="200" alt="Las Teteras Desesperadas">
 
 # Документация к проекту на разработку рекомендательной системы
-# для проекта UniGoTo. 
 
 # 1. Введение
 
