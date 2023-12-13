@@ -203,7 +203,7 @@ src/recommendator.py
 либо
 ```
 pip install --upgrade streamlit
-streamlit run https://raw.githubusercontent.com/YuliaSannikova180777/HACKATHON_LTD_-UniGoTo-/main/ml_web_app.py
+streamlit run https://raw.githubusercontent.com/YuliaSannikova180777/HACKATHON_LTD_-UniGoTo-/main/streamlit_app.py
 ```
 
 # Над созданием проекта работали:
