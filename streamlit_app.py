@@ -1,7 +1,8 @@
 import streamlit as st  # - фреймворк для развертывания моделей и визуализаций
 
 
-# Макет приложения STREAMLIT
+# Задание широкоформатного режима страницы и указание заголовка
+st.set_page_config(layout="wide", page_title="UniGoTo", page_icon=":ai:")
 
 with row1_1:
     st.title("UniGoTo")
