@@ -194,6 +194,9 @@
 # Локальный запуск приложения
 
 src/recommendator.py
+```
+pip install --upgrade streamlit
+streamlit run https://raw.githubusercontent.com/Zagalskiy/ml_web_app/main/ml_web_app.py
 
 # Над созданием проекта работали:
 
