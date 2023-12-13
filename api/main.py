@@ -205,3 +205,7 @@ def get_user_recommendations(user_data: UserData, include_location: bool = False
     except Exception as e:
         logger.error(f"Internal Server Error: {e}")
         raise handle_generic_exception(e)
+        
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000)        
