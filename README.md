@@ -1,6 +1,7 @@
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://unigoto.streamlit.app/)
+
 # Рекомендательная система для стартапа UniGoTo
 ## от команды "Las Teteras Desesperadas"
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://unigoto.streamlit.app/)
 
 <img src="https://github.com/Zagalskiy/ml_web_app/blob/main/Las_Teteras_Desesperadas.jpg" width="200" height="200" alt="Las Teteras Desesperadas">
 
