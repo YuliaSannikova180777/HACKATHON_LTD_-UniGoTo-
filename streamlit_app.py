@@ -7,12 +7,7 @@ st.set_page_config(layout="wide", page_title="UniGoTo", page_icon=":ai:")
 st.title("UniGoTo")
 st.write("Рекомендательный сервис ВУЗов и специальностей на основе технологии Искусственного Интеллекта.")
 
-@st.cache_resource   # Функция декоратора для хранения одноэлементных объектов
-def load_data():     # предназначенная для избежания повторного пересчета
-    data = pd.read_csv("./data/preprocessed_data.csv")
-    return data
-
-data = load_data()
+data = pd.read_csv("./data/preprocessed_data.zip")
 st.write(data)
 
 with st.form("interests_form"):
