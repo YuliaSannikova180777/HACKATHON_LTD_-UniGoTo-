@@ -47,9 +47,6 @@ data = load_data("./data/preprocessed_data.zip")
 # Обрабатываем пропущенные значения в столбце 'preprocessed_interests'
 data['preprocessed_interests'].fillna('', inplace=True)
 
-# Выводим считанный DataFrame
-st.write(data)
-
 # Задаём словари интересов
 user_interests = []
 interest_col = ['О себе', 'Сфера деятельности', 'Любимые книги', 'Любимые игры', 'Интересы и хобби']
