@@ -11,6 +11,18 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 
+# Проверяем наличие необходимых ресурсов NLTK перед их загрузкой
+try:
+    nltk.data.find('punkt')
+    nltk.data.find('stopwords')
+    nltk.data.find('wordnet')
+# Загружаем необходимые ресурсы для обработки
+# текстовых данных из Natural Language Toolkit
+except LookupError:
+    nltk.download('punkt')  # токенизатор 
+    nltk.download('stopwords')  # список стоп-слов
+    nltk.download('wordnet')  # модуль для лемматизации
+
 # Получаем путь к текущей папке скриптов src/
 current_dir = os.path.dirname(os.path.abspath(__file__))  # для .py
 # current_dir = os.getcwd()  # для .ipynb
