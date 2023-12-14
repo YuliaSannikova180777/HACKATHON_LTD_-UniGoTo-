@@ -56,17 +56,17 @@ def load_data(file_name):  # предназначенная для избежа�
         return data
 
 # Задаём список имён файлов для загрузки
-files_to_process = ['./data/universities_filtered.csv',
-                    './data/faculties_filtered.csv',
-                    './data/countries_filtered.csv',
-                    './data/cities_filtered.csv',
-                    './data/cities_regions.csv']
+files_to_process = ['./data/universities_filtered.zip',
+                    './data/faculties_filtered.zip',
+                    './data/countries_filtered.zip',
+                    './data/cities_filtered.zip',
+                    './data/cities_regions.zip']
 dfs = {}  # Используем словарь для хранения DataFrame
 
 # Загружаем файлы CSV в DataFrame
 for file_name, idx in zip(files_to_process, range(len(files_to_process))):
         dfs[idx] = load_data(file_name)
-data = load_data("./data/preprocessed_data.csv")
+data = load_data("./data/preprocessed_data.zip")
 
 # Обрабатываем пропущенные значения в столбце 'preprocessed_interests'
 data['preprocessed_interests'].fillna('', inplace=True)
