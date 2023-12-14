@@ -48,7 +48,7 @@ with col1_2:  # Средняя колонка
                  интересов пользователей и алгоритм косинусного сходства для вычисления схожести их интересов.]
                  """)
 with col1_3:  # Правая колонка
-        st.image("C:/ML/Hackathon2/Las_Teteras_Desesperadas.jpg", width=100)
+        st.image("Las_Teteras_Desesperadas.jpg", width=100)
 
 @st.cache_resource  # Функция декоратора для хранения одноэлементных объектов
 def load_data(file_name):  # предназначенная для избежания повторного пересчёта
@@ -56,17 +56,17 @@ def load_data(file_name):  # предназначенная для избежа�
         return data
 
 # Задаём список имён файлов для загрузки
-files_to_process = ['C:/ML/Hackathon2/data/universities_filtered.csv',
-                    'C:/ML/Hackathon2/data/faculties_filtered.csv',
-                    'C:/ML/Hackathon2/data/countries_filtered.csv',
-                    'C:/ML/Hackathon2/data/cities_filtered.csv',
-                    'C:/ML/Hackathon2/data/cities_regions.csv']
+files_to_process = ['./data/universities_filtered.csv',
+                    './data/faculties_filtered.csv',
+                    './data/countries_filtered.csv',
+                    './data/cities_filtered.csv',
+                    './data/cities_regions.csv']
 dfs = {}  # Используем словарь для хранения DataFrame
 
 # Загружаем файлы CSV в DataFrame
 for file_name, idx in zip(files_to_process, range(len(files_to_process))):
         dfs[idx] = load_data(file_name)
-data = load_data("C:/ML/Hackathon2/data/preprocessed_data.csv")
+data = load_data("./data/preprocessed_data.csv")
 
 # Обрабатываем пропущенные значения в столбце 'preprocessed_interests'
 data['preprocessed_interests'].fillna('', inplace=True)
