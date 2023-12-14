@@ -231,3 +231,5 @@ if user_city_found:
 
                 # Применяем функцию вывода рекомендаций
                 recommendation_output(top_indices_from_region, user_cosine_sim_from_region)
+
+user_city_found = False  # Сбрасываем флаг того, что город найден
