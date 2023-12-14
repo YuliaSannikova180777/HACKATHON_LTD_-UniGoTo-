@@ -129,10 +129,10 @@ elif load_interest == 'нет':
 tfidf_vectorizer = TfidfVectorizer()
 tfidf_matrix = csr_matrix(tfidf_vectorizer.fit_transform(data['preprocessed_interests']))
 
-# Создаём разреженную матрицу TF-IDF для преобразования строк интересов пользователей
+# Создаём разреженную матрицу TF-IDF для преобразования строк интересов пользователя
 user_tfidf_matrix = tfidf_vectorizer.transform(user_data['preprocessed_interests'])
 
-# Вычисляем косинусное сходство пользователя с другими пользователями
+# Вычисляем косинусное сходство интересов пользователя и других пользователей
 user_cosine_sim = cosine_similarity(user_tfidf_matrix, tfidf_matrix)
 
 # Получаем ТОП-20 индексов пользователей с наибольшими косинусными сходствами
@@ -156,6 +156,8 @@ def recommendation_output(top_indices, user_cosine_sim):
 
 # Вывод ТОП-20 предпочтений пользователей
 print("\nТОП-20 рекомендованных ВУЗов:")
+
+# Применяем функцию вывода рекомендаций
 recommendation_output(top_indices, user_cosine_sim)
 
 # Запрашиваем желание пользователя ввести его город
@@ -182,9 +184,6 @@ if answer == 'да':
     # Получаем все города из региона пользователя
     cities_in_region = dfs[4].loc[dfs[4]['region'] == user_region, 'city_id'].values
 
-    # Проверяем, не пуст ли список городов
-    print(cities_in_region)
-
     # Фильтруем данные по пользователям из того же региона
     users_from_region = data[data['city_id'].isin(cities_in_region)]
 
@@ -202,7 +201,9 @@ if answer == 'да':
         top_indices_from_region = user_cosine_sim_from_region.argsort()[0][-21:-1][::-1]
 
         # Вывод ТОП-20 предпочтений пользователей из этого региона
-        print(f"\nТОП-20 рекомендованных ВУЗов на основе предпочтений других пользователей из региона {user_region}:")
+        print(f"\nТОП-20 рекомендованных ВУЗов для региона {user_region}:")
+
+        # Применяем функцию вывода рекомендаций
         recommendation_output(top_indices_from_region, user_cosine_sim_from_region)
         print('\nСпасибо за использование наших рекомендаций!')  # Благодарность
 elif answer == 'нет':
