@@ -66,6 +66,9 @@ for file in files:
 # Объединяем все DataFrame из списка df_list в один
 data = pd.concat(df_list, ignore_index=True)
 
+# Оставляем только пользователей из России
+data = data[(data['country_id'] == 1)]
+
 # Задаём пороговые значения
 thresholds = {'country_id': 500,
               'city_id': 9000000,
