@@ -94,8 +94,13 @@ for file_name in files_to_process:
         if col in data.columns:
             data[col] = data[col].str.replace(r'\r\n', '', regex=True)
 
-    # Удаляем 1 строку (где 0 индекс)
-    data.drop(labels=[0], axis=0, inplace=True)
+    # Удаляем 1 строку (где 0 индекс) кроме России
+    if file_name != ('countries.csv' or 'cities.csv'):
+        data.drop(labels=[0], axis=0, inplace=True)
+
+    # Удаляем 0 индекс для городов
+    if file_name == 'cities.csv':
+        data = data[(data['city_id'] != 0)]
 
     # Сохраняем обработанные данные в CSV
     data.to_csv(output_path, index=False)
