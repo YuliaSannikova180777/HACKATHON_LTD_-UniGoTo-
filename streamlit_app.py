@@ -1,11 +1,27 @@
+import pandas as pd
 import re
 import streamlit as st
 import time
-import pandas as pd
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
 from scipy.sparse import csr_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+
+# Проверяем наличие необходимых ресурсов NLTK перед их загрузкой
+try:
+    nltk.data.find('punkt')
+    nltk.data.find('stopwords')
+    nltk.data.find('wordnet')
+# Загружаем необходимые ресурсы для обработки
+# текстовых данных из Natural Language Toolkit
+except LookupError:
+    nltk.download('punkt')  # токенизатор 
+    nltk.download('stopwords')  # список стоп-слов
+    nltk.download('wordnet')  # модуль для лемматизации
 
 # Задание широкоформатного режима страницы и указание заголовка
 st.set_page_config(layout="wide", page_title="UniGoTo", page_icon=":student:")
@@ -32,7 +48,7 @@ with col1_2:  # Средняя колонка
                  интересов пользователей и алгоритм косинусного сходства для вычисления схожести их интересов.]
                  """)
 with col1_3:  # Правая колонка
-        st.image("Las_Teteras_Desesperadas.jpg", width=100)
+        st.image("C:/ML/Hackathon2/Las_Teteras_Desesperadas.jpg", width=100)
 
 @st.cache_resource  # Функция декоратора для хранения одноэлементных объектов
 def load_data(file_name):  # предназначенная для избежания повторного пересчёта
@@ -40,20 +56,43 @@ def load_data(file_name):  # предназначенная для избежа�
         return data
 
 # Задаём список имён файлов для загрузки
-files_to_process = ['./data/universities_filtered.zip',
-                    './data/faculties_filtered.zip',
-                    './data/countries_filtered.zip',
-                    './data/cities_filtered.zip',
-                    './data/cities_regions.zip']
+files_to_process = ['C:/ML/Hackathon2/data/universities_filtered.csv',
+                    'C:/ML/Hackathon2/data/faculties_filtered.csv',
+                    'C:/ML/Hackathon2/data/countries_filtered.csv',
+                    'C:/ML/Hackathon2/data/cities_filtered.csv',
+                    'C:/ML/Hackathon2/data/cities_regions.csv']
 dfs = {}  # Используем словарь для хранения DataFrame
 
 # Загружаем файлы CSV в DataFrame
 for file_name, idx in zip(files_to_process, range(len(files_to_process))):
         dfs[idx] = load_data(file_name)
-data = load_data("./data/preprocessed_data.zip")
+data = load_data("C:/ML/Hackathon2/data/preprocessed_data.csv")
 
 # Обрабатываем пропущенные значения в столбце 'preprocessed_interests'
 data['preprocessed_interests'].fillna('', inplace=True)
+
+# Функция предобработки текстовых данных
+def preprocess_text(text):
+    # Токенизируем текст на отдельные слова
+    tokens = word_tokenize(text)
+    
+    # Задаём стоп-слова для русского и английского языков
+    # (общие слова, не несущие смысловой нагрузки в контексте анализа)
+    stop_words_ru = set(stopwords.words('russian'))
+    stop_words_en = set(stopwords.words('english'))
+    
+    # Объединяем стоп-слова
+    stop_words = stop_words_ru.union(stop_words_en)
+    
+    # Удаляем стоп-слова
+    tokens = [word for word in tokens if word not in stop_words]
+    
+    # Инициализируем лемматизатор
+    lemmatizer = WordNetLemmatizer()
+    
+    # Лемматизируем слова (приводим к их базовой форме - лемме)
+    tokens = [lemmatizer.lemmatize(word) for word in tokens]
+    return ' '.join(tokens)
 
 # Функция для очистки текста от лишних символов
 def clean_text(text):
@@ -140,6 +179,9 @@ with col2_1:  # Левая колонка
 
                         # Объединяем все строки интересов пользователя
                         user_data['preprocessed_interests'] = user_data.apply(lambda row: ' '.join(row), axis=1)
+
+                        # Применяем функцию предобработки текста
+                        user_data['preprocessed_interests'] = preprocess_text(user_data['preprocessed_interests'])
 
                         # Создаём разреженную матрицу TF-IDF для преобразования строк интересов пользователей
                         tfidf_vectorizer = TfidfVectorizer()
